@@ -1,10 +1,8 @@
 var devminutesControllers = angular.module('dmControllers', [ 'ngSanitize' ]);
 
-devminutesControllers.controller('EpisodeListCtrl', ['$scope', '$http', '$sce',
-    function($scope, $http, $sce) {
+devminutesControllers.controller('EpisodeListCtrl', ['$scope', '$http', '$sce','master',
+    function($scope, $http, $sce, master) {
         $scope.episodes = [];
-        $http.get('../common/episode-grammer.pegjs').success(function(grammer) {
-            var master = new DMMaster(grammer);
 
             $http.get('../episodes/000-list.dme').success(function(data) {
                 var configuration = master.parseConfiguration(data);
@@ -28,18 +26,16 @@ devminutesControllers.controller('EpisodeListCtrl', ['$scope', '$http', '$sce',
                     });            
                 }
             });
-        }); 
+
         $scope.orderProp = '-id'; 
     }        
 ]);
 
-devminutesControllers.controller('EpisodeDetailCtrl', ['$scope', '$routeParams', '$http', '$sce', '$rootScope',  
-    function($scope, $routeParams, $http, $sce, $rootScope) {
+devminutesControllers.controller('EpisodeDetailCtrl', ['$scope', '$routeParams', '$http', '$sce', '$rootScope', 'master',
+    function($scope, $routeParams, $http, $sce, $rootScope, master) {
         $scope.contentLoaded = false;
         
         var episodeId = $routeParams.episodeId;
-        $http.get('../common/episode-grammer.pegjs').success(function(data) {
-            var master = new DMMaster(data); 
 
             $http.get('../episodes/000-list.dme').success(function(data) {
                 var episodeConfiguration = master.findEpisodeConfigurationById(data, episodeId);
@@ -53,7 +49,6 @@ devminutesControllers.controller('EpisodeDetailCtrl', ['$scope', '$routeParams',
                     $rootScope.title = 'DevMinutes - ' + episode.name;
                 });
             });
-        });
     }
 ]);
 
