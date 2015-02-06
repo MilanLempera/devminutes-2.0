@@ -3,13 +3,11 @@ node_js:
   - "0.10"
 script:
   - npm install -g bower gulp
+  - npm install
   - bower install
   - gulp build
-  - wget -O rss.xml http://feeds.soundcloud.com/users/soundcloud:users:49720730/sounds.rss 
-  - openssl aes-256-cbc -k "$encrypt_key" -d -a -in devminutes_deploy.enc -out id_rsa
+  - wget -O rss.xml http://feeds.soundcloud.com/users/soundcloud:users:49720730/sounds.rss
   - cp index.html 404.html
-  - mv id_rsa ~/.ssh
-  - chmod 400 ~/.ssh/id_rsa
   - rm .gitignore
   - rm -rf .git
   - git init
@@ -18,4 +16,4 @@ script:
   - git remote add origin git@github.com:MilanLempera/milanlempera.github.io.git
   - git add .
   - git commit -m "New version"
-  - git push -f origin master
+  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:gh-pages > /dev/null 2>&1

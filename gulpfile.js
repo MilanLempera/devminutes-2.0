@@ -23,7 +23,7 @@ gulp.task('devel', function() {
 
 gulp.task('templates', function() {
   return gulp.src('partials/*.html')
-      .pipe(plugins.angularTemplatecache('templates.js', {module: 'devminutes'}))
+      .pipe(plugins.angularTemplatecache('templates.js', {module: 'devminutes', root: 'partials/'}))
       .pipe(gulp.dest('tmp/'));
 });
 
