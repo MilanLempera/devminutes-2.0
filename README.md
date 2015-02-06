@@ -19,6 +19,7 @@ $ npm install -g bower gulp
 $ git clone git@github.com:devminutes/devminutes-2.0.git
 $ cd devminutes-2.0/
 $ npm install
+$ bower install
 $ gulp devel
 ```
 

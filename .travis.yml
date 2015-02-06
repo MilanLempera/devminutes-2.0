@@ -4,6 +4,7 @@ node_js:
 script:
   - npm install -g bower gulp
   - npm install
+  - bower install
   - gulp build
   - wget -O rss.xml http://feeds.soundcloud.com/users/soundcloud:users:49720730/sounds.rss
   - cp index.html 404.html
