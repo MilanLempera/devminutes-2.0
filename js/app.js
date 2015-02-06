@@ -13,30 +13,11 @@ devminutesApp.config(['$locationProvider', '$routeProvider',
     $routeProvider.
         when('/', {
           templateUrl: 'partials/episode-list.html',
-          controller: 'EpisodeListCtrl',
-          resolve: {
-            master: function(masterLoader) {
-              return masterLoader.load();
-            },
-            configuration: function($q, masterLoader, listService) {
-              return $q.all({master: masterLoader.load(), listData: listService.load()})
-                  .then(function(results) {
-                    return results.master.parseConfiguration(results.listData)
-                  });
-            }
-          }
+          controller: 'EpisodeListCtrl'
         }).
         when('/episode/:episodeId', {
           templateUrl: 'partials/episode-detail.html',
-          controller: 'EpisodeDetailCtrl',
-          resolve: {
-            master: function(masterLoader) {
-              return masterLoader.load();
-            },
-            listData: function(listService) {
-              return listService.load();
-            }
-          }
+          controller: 'EpisodeDetailCtrl'
         })
         .otherwise({
           redirectTo: '/'
@@ -51,7 +32,7 @@ devminutesApp.service('masterLoader', function($http, $q) {
       return $q.when(this.master);
     }
 
-    return $http.get('../common/episode-grammer.pegjs').then(function(response) {
+    return $http.get('common/episode-grammer.pegjs').then(function(response) {
       this.master = new DMMaster(response.data);
       return this.master;
     }.bind(this))
@@ -66,7 +47,7 @@ devminutesApp.service('listService', function($http, $q) {
       return $q.when(this.data);
     }
 
-    return $http.get('../episodes/000-list.dme').then(function(response) {
+    return $http.get('episodes/000-list.dme').then(function(response) {
       this.data = response.data;
       return this.data;
     }.bind(this))
