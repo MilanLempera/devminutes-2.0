@@ -16,4 +16,4 @@ script:
   - git remote add origin git@github.com:MilanLempera/milanlempera.github.io.git
   - git add .
   - git commit -m "New version"
-  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:gh-pages > /dev/null 2>&1
+  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:master
