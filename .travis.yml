@@ -15,7 +15,7 @@ script:
   - git init
   - git config --global user.email "devminutes@gmail.com"
   - git config --global user.name "DevMinutes"
-  - git remote add origin git@github.com:devminutes/devminutes.github.io.git
+  - git remote add origin git@github.com:MilanLempera/milanlempera.github.io.git
   - git add .
   - git commit -m "New version"
   - git push -f origin master
