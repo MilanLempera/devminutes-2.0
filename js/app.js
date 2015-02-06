@@ -8,31 +8,40 @@ var devminutesApp = angular.module('devminutes', [
 devminutesApp.config(['$locationProvider', '$routeProvider',
   function($locationProvider, $routeProvider) {
     // $locationProvider.hashPrefix('!');
-    $locationProvider.html5Mode(true);   
+    $locationProvider.html5Mode(true);
 
     $routeProvider.
-      when('/', {
-        templateUrl: 'partials/episode-list.html',
-        controller: 'EpisodeListCtrl',
+        when('/', {
+          templateUrl: 'partials/episode-list.html',
+          controller: 'EpisodeListCtrl',
           resolve: {
             master: function(masterLoader) {
               return masterLoader.load();
+            },
+            configuration: function($q, masterLoader, listService) {
+              return $q.all({master: masterLoader.load(), listData: listService.load()})
+                  .then(function(results) {
+                    return results.master.parseConfiguration(results.listData)
+                  });
             }
           }
-      }).
-      when('/episode/:episodeId', {
-        templateUrl: 'partials/episode-detail.html',
-        controller: 'EpisodeDetailCtrl',
+        }).
+        when('/episode/:episodeId', {
+          templateUrl: 'partials/episode-detail.html',
+          controller: 'EpisodeDetailCtrl',
           resolve: {
             master: function(masterLoader) {
               return masterLoader.load();
+            },
+            listData: function(listService) {
+              return listService.load();
             }
           }
-      })
+        })
         .otherwise({
           redirectTo: '/'
         });
-}]);
+  }]);
 
 devminutesApp.service('masterLoader', function($http, $q) {
   this.master = null;
@@ -49,8 +58,23 @@ devminutesApp.service('masterLoader', function($http, $q) {
   }
 });
 
+devminutesApp.service('listService', function($http, $q) {
+  this.data = null;
+
+  this.load = function() {
+    if (this.data) {
+      return $q.when(this.data);
+    }
+
+    return $http.get('../episodes/000-list.dme').then(function(response) {
+      this.data = response.data;
+      return this.data;
+    }.bind(this))
+  }
+});
+
 devminutesApp.run(['$location', '$rootScope', function($location, $rootScope) {
-    $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
-        $rootScope.title = "DevMinutes";
-    });
+  $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
+    $rootScope.title = "DevMinutes";
+  });
 }]);
