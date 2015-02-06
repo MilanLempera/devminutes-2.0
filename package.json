@@ -25,5 +25,8 @@
     "gulp-ng-annotate": "~0.5.2",
     "gulp-footer": "~1.0.5",
     "connect": "~3.3.4"
+  },
+  "scripts": {
+    "postinstall":"bower install"
   }
 }
